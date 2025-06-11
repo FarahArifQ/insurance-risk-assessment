@@ -1,0 +1,54 @@
+{% extends 'layout.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<div class="hero-section bg-primary text-white py-5 mb-5">
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">Insurance Risk Analyzer</h1>
+                <p class="lead mb-4">Our advanced AI model predicts the likelihood of insurance claims with 90%+ accuracy, helping insurers make better risk assessments.</p>
+                <a href="/predict" class="btn btn-light btn-lg px-4 me-2">
+                    <i class="bi bi-graph-up"></i> Try Predictor
+                </a>
+                <a href="/visualize" class="btn btn-outline-light btn-lg px-4">
+                    <i class="bi bi-bar-chart"></i> View Insights
+                </a>
+            </div>            <div class="col-lg-6">
+                <img src="{{ url_for('static', filename='images/risk.webp') }}" class="img-fluid rounded shadow" alt="Insurance Risk Analysis" style="max-height: 400px; width: 100%; object-fit: cover;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="bi bi-shield-check display-4 text-primary mb-3"></i>
+                    <h3>Risk Assessment</h3>
+                    <p>Our model evaluates multiple factors to determine the probability of a claim being filed.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="bi bi-graph-up-arrow display-4 text-primary mb-3"></i>
+                    <h3>Data-Driven</h3>
+                    <p>Analyzes historical claims data to identify patterns and risk factors.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="bi bi-speedometer2 display-4 text-primary mb-3"></i>
+                    <h3>Fast Results</h3>
+                    <p>Get instant risk assessments with our optimized prediction engine.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

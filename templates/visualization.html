@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+{% block title %}Data Visualizations{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow mb-4">
+            <div class="card-header bg-primary text-white">
+                <h3><i class="bi bi-bar-chart"></i> Data Analysis</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5>Claim Distribution</h5>
+                        <img src="{{ url_for('static', filename='images/target_dist.png') }}" class="img-fluid" alt="Claim Distribution">
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Feature Importance</h5>
+                        <img src="{{ url_for('static', filename='images/feature_importance.png') }}" class="img-fluid" alt="Feature Importance">
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <h5>Correlation Matrix</h5>
+                        <img src="{{ url_for('static', filename='images/correlation.png') }}" class="img-fluid" alt="Correlation Matrix">
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <h5>Age vs Claim Rate</h5>
+                        <img src="{{ url_for('static', filename='images/age_vs_claim.png') }}" class="img-fluid" alt="Age vs Claim">
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Vehicle Type vs Claim Rate</h5>
+                        <img src="{{ url_for('static', filename='images/vehicle_vs_claim.png') }}" class="img-fluid" alt="Vehicle vs Claim">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

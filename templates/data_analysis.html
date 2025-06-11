@@ -1,0 +1,94 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="container mt-4">
+    <!-- Basic Dataset Information -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <h3><i class="bi bi-database"></i> Dataset Overview</h3>
+        </div>
+        <div class="card-body">
+            <p><strong>Total Number of Rows in Dataset:</strong> {{ basic_info.rows }}</p>
+            <p><strong>Number of Rows in Sample:</strong> {{ basic_info.sample_rows }}</p>
+            <p><strong>Number of Columns:</strong> {{ basic_info.columns }}</p>
+            <h4>Data Types Distribution:</h4>
+            <ul>
+                {% for dtype, count in basic_info.dtypes.items() %}
+                <li>{{ dtype }}: {{ count }} columns</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Sample Data -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <h3><i class="bi bi-table"></i> Sample Data</h3>
+        </div>
+        <div class="card-body table-responsive">
+            {{ sample_data|safe }}
+        </div>
+    </div>
+
+    <!-- Missing Values Analysis -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <h3><i class="bi bi-exclamation-triangle"></i> Missing Values Analysis</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Missing Values Count</h4>
+                    <ul class="list-unstyled">
+                        {% for col, count in missing_values.items() %}
+                        <li>{{ col }}: {{ count }} ({{ missing_percentages[col] }}%)</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <img src="{{ url_for('static', filename='images/missing_values_heatmap.png') }}" class="img-fluid" alt="Missing Values Heatmap">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Statistics -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <h3><i class="bi bi-graph-up"></i> Summary Statistics</h3>
+        </div>
+        <div class="card-body table-responsive">
+            {{ summary_stats|safe }}
+        </div>
+    </div>
+
+    <!-- Data Type Information -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <h3><i class="bi bi-list-columns"></i> Column Data Types</h3>
+        </div>
+        <div class="card-body table-responsive">
+            {{ dtype_info|safe }}
+        </div>
+    </div>
+
+    <!-- Target Distribution -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <h3><i class="bi bi-bar-chart"></i> Target Variable Distribution</h3>
+        </div>
+        <div class="card-body">
+            <img src="{{ url_for('static', filename='images/target_distribution.png') }}" class="img-fluid" alt="Target Distribution">
+        </div>
+    </div>
+
+    <!-- Numerical Features Distribution -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <h3><i class="bi bi-graph-up"></i> Numerical Features Distribution</h3>
+        </div>
+        <div class="card-body">
+            <img src="{{ url_for('static', filename='images/numerical_distributions.png') }}" class="img-fluid" alt="Numerical Distributions">
+        </div>
+    </div>
+</div>
+{% endblock %}

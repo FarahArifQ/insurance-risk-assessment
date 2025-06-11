@@ -1,0 +1,206 @@
+{% extends 'layout.html' %}
+{% block title %}Data Preprocessing{% endblock %}
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-4">Data Preprocessing and Analysis</h2>    <!-- Download Preprocessed Data -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Download Preprocessed Dataset</h4>
+            <div>
+                <a href="{{ url_for('static', filename='data/preprocessed_data.csv') }}" 
+                   class="btn btn-light" download>
+                    <i class="bi bi-download"></i> Download Processed Dataset
+                </a>
+                <small class="text-light ms-2">(Includes all preprocessing steps)</small>
+            </div>
+        </div>
+        <div class="card-body">
+            <p class="alert alert-info mb-0">
+                <i class="bi bi-info-circle"></i> 
+                This dataset has been preprocessed with all the transformations shown below and is ready for model training.
+                The CSV file includes documentation of all preprocessing steps applied.
+            </p>
+        </div>
+    </div>
+
+    <!-- Preprocessing Techniques Applied -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Preprocessing Techniques Applied</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                {% for technique, info in preprocessing_techniques.items() %}
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">{{ technique }}</h5>
+                            <p class="card-text">{{ info.description }}</p>
+                            <div class="alert alert-info">
+                                <strong>Impact:</strong> {{ info.stats }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>    <!-- Missing Values Analysis -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Missing Values Analysis</h4>
+        </div>
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-12">
+                    <img src="{{ url_for('static', filename='images/preprocessing/missing_values.png') }}" 
+                         class="img-fluid rounded mb-3" alt="Missing Values Analysis">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Class Distribution -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Class Distribution (Before vs After SMOTE)</h4>
+        </div>
+        <div class="card-body">
+            <img src="{{ url_for('static', filename='images/preprocessing/class_distribution.png') }}" 
+                 class="img-fluid rounded mb-3" alt="Class Distribution">
+        </div>
+    </div>
+
+    <!-- Feature Scaling -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Feature Scaling Visualization</h4>
+        </div>
+        <div class="card-body">
+            <img src="{{ url_for('static', filename='images/preprocessing/feature_distributions.png') }}" 
+                 class="img-fluid rounded mb-3" alt="Feature Distributions">
+            <div class="alert alert-info">
+                <strong>Note:</strong> After standardization, features have mean (μ) = 0 and standard deviation (σ) = 1
+            </div>
+        </div>
+    </div>
+
+    <!-- Categorical Encoding -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Categorical Feature Encoding</h4>
+        </div>
+        <div class="card-body">
+            <img src="{{ url_for('static', filename='images/preprocessing/categorical_encoding.png') }}" 
+                 class="img-fluid rounded mb-3" alt="Categorical Encoding">
+        </div>
+    </div>
+
+    <!-- Feature Correlations -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Feature Correlations (Before vs After)</h4>
+        </div>
+        <div class="card-body">
+            <img src="{{ url_for('static', filename='images/preprocessing/correlation_matrix.png') }}" 
+                 class="img-fluid rounded mb-3" alt="Correlation Matrix">
+        </div>
+    </div>
+
+    <!-- Summary Statistics -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Summary Statistics Comparison</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="text-primary">Before Preprocessing</h5>
+                    {{ summary_stats_before | safe }}
+                </div>
+                <div class="col-md-6">
+                    <h5 class="text-primary">After Preprocessing</h5>
+                    {{ summary_stats_after | safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Class Distribution -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Class Distribution Before vs After</h4>
+        </div>
+        <div class="card-body">
+            <img src="{{ url_for('static', filename='images/preprocessing/class_distribution.png') }}" 
+                 class="img-fluid rounded mb-3" alt="Class Distribution">
+        </div>
+    </div>
+
+    <!-- Feature Distributions -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Feature Distributions Before vs After</h4>
+        </div>
+        <div class="card-body">
+            <img src="{{ url_for('static', filename='images/preprocessing/feature_distributions.png') }}" 
+                 class="img-fluid rounded mb-3" alt="Feature Distributions">
+        </div>
+    </div>
+
+    <!-- Categorical Features Encoding -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Categorical Features Encoding</h4>
+        </div>
+        <div class="card-body">
+            <img src="{{ url_for('static', filename='images/preprocessing/categorical_encoding.png') }}" 
+                 class="img-fluid rounded mb-3" alt="Categorical Encoding">
+        </div>
+    </div>
+
+    <!-- Correlation Matrix -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Feature Correlations Before vs After</h4>
+        </div>
+        <div class="card-body">
+            <img src="{{ url_for('static', filename='images/preprocessing/correlation_matrix.png') }}" 
+                 class="img-fluid rounded mb-3" alt="Correlation Matrix">
+        </div>
+    </div>
+
+    <!-- Summary Statistics -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Summary Statistics</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="text-primary">Before Preprocessing</h5>
+                    {{ summary_stats_before | safe }}
+                </div>
+                <div class="col-md-6">
+                    <h5 class="text-primary">After Preprocessing</h5>
+                    {{ summary_stats_after | safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Download Section -->
+    <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Download Preprocessed Dataset</h4>
+        </div>
+        <div class="card-body text-center">
+            <p>Download the preprocessed dataset for further analysis:</p>
+            <a href="{{ url_for('static', filename='../data/train_optimized.csv') }}" 
+               class="btn btn-primary btn-lg">
+                <i class="bi bi-download"></i> Download Preprocessed Dataset
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

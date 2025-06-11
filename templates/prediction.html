@@ -1,0 +1,198 @@
+{% extends 'layout.html' %}
+{% block title %}Risk Prediction{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0"><i class="bi bi-graph-up"></i> Insurance Claim Risk Assessment</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST" class="needs-validation" novalidate>
+                    <div class="row g-3">
+                        <h5 class="mt-3">Personal Information</h5>
+                        <div class="col-md-6">
+                            <label for="ind_01" class="form-label">Age Category</label>
+                            <select class="form-select" id="ind_01" name="ps_ind_01" required>
+                                <option value="">Select...</option>
+                                <option value="0">0-25</option>
+                                <option value="1">26-35</option>
+                                <option value="2">36-45</option>
+                                <option value="3">46-55</option>
+                                <option value="4">56-65</option>
+                                <option value="5">65+</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="ind_03" class="form-label">Years Licensed</label>
+                            <input type="number" class="form-control" id="ind_03" name="ps_ind_03" min="0" max="20" required>
+                        </div>
+
+                        <h5 class="mt-4">Vehicle Information</h5>
+                        <div class="col-md-6">
+                            <label for="car_01" class="form-label">Vehicle Category</label>
+                            <select class="form-select" id="car_01" name="ps_car_01_cat" required>
+                                <option value="">Select...</option>
+                                <option value="0">Compact</option>
+                                <option value="1">Sedan</option>
+                                <option value="2">SUV</option>
+                                <option value="3">Truck</option>
+                                <option value="4">Luxury</option>
+                                <option value="5">Sports</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="car_12" class="form-label">Vehicle Age</label>
+                            <input type="number" class="form-control" id="car_12" name="ps_car_12" min="0" max="30" step="0.1" required>
+                        </div>
+
+                        <h5 class="mt-4">Regional Information</h5>
+                        <div class="col-md-4">
+                            <label for="reg_01" class="form-label">Region Score 1</label>
+                            <input type="number" class="form-control" id="reg_01" name="ps_reg_01" min="0" max="1" step="0.1" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="reg_02" class="form-label">Region Score 2</label>
+                            <input type="number" class="form-control" id="reg_02" name="ps_reg_02" min="0" max="3" step="0.1" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="reg_03" class="form-label">Region Score 3</label>
+                            <input type="number" class="form-control" id="reg_03" name="ps_reg_03" min="0" max="3" step="0.01" required>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button class="btn btn-primary btn-lg" type="submit">
+                            <i class="bi bi-calculator"></i> Calculate Risk
+                        </button>
+                    </div>
+                </form>
+
+                {% if prediction %}
+                <div class="mt-4 p-3 {% if prediction == 'High Risk' %}bg-danger{% else %}bg-success{% endif %} text-white rounded">
+                    <h4><i class="bi bi-exclamation-triangle-fill"></i> Prediction Result: {{ prediction }}</h4>
+                    <p class="mb-0">Probability: {{ probability }}%</p>
+                </div>
+                  {% if show_plots %}
+                <div class="mt-4">
+                    <h4 class="mb-4">Model Performance Analysis</h4>
+                    
+                    <!-- Metrics Cards -->
+                    <div class="row mb-4">
+                        <div class="col-md-2">
+                            <div class="card text-white bg-info mb-3">
+                                <div class="card-body">
+                                    <h6 class="card-title">Accuracy</h6>
+                                    <p class="card-text">{{ metrics.accuracy }}%</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card text-white bg-primary mb-3">
+                                <div class="card-body">
+                                    <h6 class="card-title">Precision</h6>
+                                    <p class="card-text">{{ metrics.precision }}%</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card text-white bg-warning mb-3">
+                                <div class="card-body">
+                                    <h6 class="card-title">Recall</h6>
+                                    <p class="card-text">{{ metrics.recall }}%</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card text-white bg-success mb-3">
+                                <div class="card-body">
+                                    <h6 class="card-title">F1-Score</h6>
+                                    <p class="card-text">{{ metrics.f1 }}%</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="card text-white bg-secondary mb-3">
+                                <div class="card-body">
+                                    <h6 class="card-title">AUC</h6>
+                                    <p class="card-text">{{ metrics.auc }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Confusion Matrix and ROC Curve -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Confusion Matrix</h5>
+                                </div>
+                                <div class="card-body">
+                                    <img src="{{ url_for('static', filename='images/confusion_matrix.png') }}" 
+                                         class="img-fluid" alt="Confusion Matrix">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">ROC Curve</h5>
+                                </div>
+                                <div class="card-body">
+                                    <img src="{{ url_for('static', filename='images/roc_curve.png') }}" 
+                                         class="img-fluid" alt="ROC Curve">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Precision-Recall Curve and Model Comparison -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Precision-Recall Curve</h5>
+                                </div>
+                                <div class="card-body">
+                                    <img src="{{ url_for('static', filename='images/precision_recall_curve.png') }}" 
+                                         class="img-fluid" alt="Precision-Recall Curve">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Model Performance Comparison</h5>
+                                </div>
+                                <div class="card-body">
+                                    <img src="{{ url_for('static', filename='images/model_comparison.png') }}" 
+                                         class="img-fluid" alt="Model Comparison">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                                    <p class="card-text">{{ metrics.recall }}%</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-white bg-success mb-3">
+                                <div class="card-body">
+                                    <h6 class="card-title">F1 Score</h6>
+                                    <p class="card-text">{{ metrics.f1 }}%</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
